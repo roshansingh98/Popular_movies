@@ -14,8 +14,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class activityDetail extends AppCompatActivity {
-    @BindView(R.id.movieImage)
-    ImageView poster ;
+    @BindView(R.id.movies_poster)
+    ImageView imagePoster ;
     //@BindView(R.id.overview)
     TextView overView ;
     //@BindView(R.id.tv_Title)
@@ -51,10 +51,11 @@ public class activityDetail extends AppCompatActivity {
         dateRelease = findViewById(R.id.release_data);
         dateRelease.setText(release);
 
+        imagePoster = findViewById(R.id.movies_poster);
         Picasso.get()
                 .load(MovieImage)
                 .placeholder(R.drawable.image_loading)
                 .error(R.drawable.image_not_found)
-                .into(poster);
+                .into(imagePoster);
     }
 }

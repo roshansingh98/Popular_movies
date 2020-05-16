@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class NetworkUtality  {
     final static String base_url ="https://api.themoviedb.org/3/movie";
     final static String prama_api_key = "api_key";
-    final static String api = "Enter API Key here";
+    final static String api = "Enter API key here";
     final static String PARAM_LANGUAGE = "language";
     final static String language = "en-US";
     public static URL buildUrl( String Movies_Search_Quary ){

@@ -6,14 +6,14 @@ public class Movies {
     private String posterPath;
     private String originalTitle;
     private String overview;
-    private String voteAverage;
+    private String review;
     private String releaseDate;
 
     public Movies() {
         this.posterPath = posterPath;
         this.originalTitle = originalTitle;
         this.overview = overview;
-        this.voteAverage = voteAverage;
+        this.review = review;
         this.releaseDate = releaseDate;
     }
 
@@ -41,12 +41,12 @@ public class Movies {
         this.overview = overview;
     }
 
-    public String getVoteAverage() {
-        return voteAverage;
+    public String getReview() {
+        return review;
     }
 
-    public void setVoteAverage(String voteAverage) {
-        this.voteAverage = voteAverage;
+    public void setReview(String review) {
+        this.review = review;
     }
 
     public String getReleaseDate() {

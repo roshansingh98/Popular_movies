@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,14 +15,14 @@ import com.squareup.picasso.Picasso;
 public class rvAdapter extends RecyclerView.Adapter<rvAdapter.ViewHolder> {
 
     private Movies[] mMovieData;
-    private final MovieAdapterOnClickHandler mClickHandler;
+    private final AdapterClickHandler mClickHandler;
 
-    public rvAdapter(Movies[] mMovieData, MovieAdapterOnClickHandler mClickHandler) {
+    public rvAdapter(Movies[] mMovieData, AdapterClickHandler mClickHandler) {
         this.mMovieData = mMovieData;
         this.mClickHandler = mClickHandler;
     }
 
-    public interface MovieAdapterOnClickHandler {
+    public interface AdapterClickHandler {
         void onClick(int adapterPosition);
     }
 
@@ -29,11 +30,13 @@ public class rvAdapter extends RecyclerView.Adapter<rvAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.cardview_layout;
+        int listItem = R.layout.cardview_layout;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        //inflate list item xml into a view
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+
+
+
+        View view = inflater.inflate(listItem, parent, shouldAttachToParentImmediately);
         return new ViewHolder(view);
     }
 
@@ -47,9 +50,12 @@ public class rvAdapter extends RecyclerView.Adapter<rvAdapter.ViewHolder> {
         String movieToBind = mMovieData[position].getPosterPath();
         Picasso.get()
                 .load(movieToBind)
-                .placeholder(R.drawable.image_loading)
+                .placeholder(R.drawable.imageloading)
                 .error(R.drawable.image_not_found)
                 .into(holder.imageView);
+
+        String movieTitle = mMovieData[position].getOriginalTitle();
+        holder.movieName.setText(movieTitle);
 
     }
 
@@ -71,10 +77,12 @@ public class rvAdapter extends RecyclerView.Adapter<rvAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final ImageView imageView;
+        public final TextView movieName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.movieImage);
+            movieName = itemView.findViewById(R.id.movieName);
             itemView.setOnClickListener(this);
         }
 

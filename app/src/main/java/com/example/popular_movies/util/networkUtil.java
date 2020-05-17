@@ -1,4 +1,4 @@
-package com.example.popular_movies.utalities;
+package com.example.popular_movies.util;
 
 import android.net.Uri;
 
@@ -9,27 +9,29 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class NetworkUtality  {
-    final static String base_url ="https://api.themoviedb.org/3/movie";
-    final static String prama_api_key = "api_key";
-    final static String api = "Enter API key here";
-    final static String PARAM_LANGUAGE = "language";
+public class networkUtil {
+    final static String baseURL ="https://api.themoviedb.org/3/movie";
+    final static String paramKey = "api_key";
+    final static String API = "Enter Your API key here";
+    final static String paramLanguage = "language";
     final static String language = "en-US";
     public static URL buildUrl( String Movies_Search_Quary ){
-        Uri biuldUri = Uri.parse(base_url).buildUpon().appendEncodedPath(Movies_Search_Quary)
-                .appendQueryParameter(prama_api_key , api)
-                .appendQueryParameter(PARAM_LANGUAGE, language)
+        Uri buildUri = Uri.parse(baseURL).buildUpon().appendEncodedPath(Movies_Search_Quary)
+                .appendQueryParameter(paramKey, API)
+                .appendQueryParameter(paramLanguage, language)
                 .build();
         URL url = null;
         try{
-            url = new URL(biuldUri.toString());
+            url = new URL(buildUri.toString());
         } catch (MalformedURLException e){
             e.printStackTrace();
         }
         return url;
     }
-   public static String getResponceFromHttp(URL url) throws IOException{
+   public static String getResponseFromHttp(URL url) throws IOException{
        HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+
+
       try {
           InputStream inputStream = urlConnection.getInputStream();
           Scanner scanner = new Scanner(inputStream);

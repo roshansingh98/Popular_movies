@@ -10,19 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class activityDetail extends AppCompatActivity {
-    @BindView(R.id.movies_poster)
+
     ImageView imagePoster ;
-    //@BindView(R.id.overview)
     TextView overView ;
-    //@BindView(R.id.tv_Title)
     TextView movieName;
-    @BindView(R.id.release_data)
     TextView dateRelease ;
-    @BindView(R.id.tv_detail_rate)
     TextView movieRate;
 
     @Override
@@ -30,11 +24,10 @@ public class activityDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ButterKnife.bind(this);
 
-        String MovieImage = getIntent().getStringExtra("poster");
+        String movieImage = getIntent().getStringExtra("poster");
         String title = getIntent().getStringExtra("title");
-        String Movierate = getIntent().getStringExtra("rate");
+        String movieRate = getIntent().getStringExtra("rate");
         String release = getIntent().getStringExtra("release");
         String overview = getIntent().getStringExtra("overview");
 
@@ -45,16 +38,16 @@ public class activityDetail extends AppCompatActivity {
         overView = findViewById(R.id.overview);
         overView.setText(overview);
 
-        movieRate = findViewById(R.id.tv_detail_rate);
-        movieRate.setText(Movierate);
+        this.movieRate = findViewById(R.id.tv_detail_rate);
+        this.movieRate.setText(movieRate);
 
-        dateRelease = findViewById(R.id.release_data);
+        dateRelease = findViewById(R.id.tv_detail_release_date);
         dateRelease.setText(release);
 
         imagePoster = findViewById(R.id.movies_poster);
         Picasso.get()
-                .load(MovieImage)
-                .placeholder(R.drawable.image_loading)
+                .load(movieImage)
+                .placeholder(R.drawable.imageloading)
                 .error(R.drawable.image_not_found)
                 .into(imagePoster);
     }

@@ -9,17 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_main"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/tv_connection_error"
+        <ImageView
+            android:id="@+id/no_internet_iv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:textSize="30sp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/nointernet"
             android:visibility="invisible" />
 
+    </RelativeLayout>
 
         <!-- Loading indicator is only shown before the first load -->
         <ProgressBar

@@ -8,31 +8,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.popular_movies.utalities.JSONUtality;
-import com.example.popular_movies.utalities.NetworkUtality;
+import com.example.popular_movies.util.JSONUtil;
+import com.example.popular_movies.util.networkUtil;
 
 import java.net.URL;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements rvAdapter.AdapterClickHandler {
 
 
     private RecyclerView mRecyclerView;
     private rvAdapter mMovieAdapter;
     private Movies[] jsonMovieData;
 
-    @BindView(R.id.tv_connection_error)
-    TextView mConnectionError ;
-    @BindView(R.id.Loading_Page)
+    ImageView connectionErrorImage;
     ProgressBar mLoadingPage;
 
     String query = "popular";
@@ -42,15 +36,12 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        connectionErrorImage = findViewById(R.id.no_internet_iv);
+        mLoadingPage = findViewById(R.id.Loading_Page);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
 
-        ButterKnife.bind(this);
-
-
-        int mNoOfColumns = calculateNoOfColumns(getApplicationContext());
-
-        GridLayoutManager layoutManager = new GridLayoutManager(this, mNoOfColumns);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
         mRecyclerView.setLayoutManager(layoutManager);
 
@@ -68,17 +59,10 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
     }
 
     private void showJsonDataResults() {
-        mConnectionError = (TextView) findViewById(R.id.tv_connection_error);
-        mConnectionError.setVisibility(View.INVISIBLE);
+        connectionErrorImage.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    private int calculateNoOfColumns(Context applicationContext) {
-        DisplayMetrics displayMetrics = applicationContext.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (dpWidth / 180);
-        return noOfColumns;
-    }
 
     @Override
     public void onClick(int adapterPosition) {
@@ -90,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
         intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, adapterPosition);
         intentToStartDetailActivity.putExtra("title", jsonMovieData[adapterPosition].getOriginalTitle());
         intentToStartDetailActivity.putExtra("poster", jsonMovieData[adapterPosition].getPosterPath());
-        intentToStartDetailActivity.putExtra("rate", jsonMovieData[adapterPosition].getVoteAverage());
+        intentToStartDetailActivity.putExtra("rate", jsonMovieData[adapterPosition].getReview());
         intentToStartDetailActivity.putExtra("release", jsonMovieData[adapterPosition].getReleaseDate());
         intentToStartDetailActivity.putExtra("overview", jsonMovieData[adapterPosition].getOverview());
 
@@ -102,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoadingPage = (ProgressBar) findViewById(R.id.Loading_Page);
             mLoadingPage.setVisibility(View.VISIBLE);
         }
 
@@ -113,12 +96,12 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
             }
 
             String sortBy = params[0];
-            URL movieRequestUrl = NetworkUtality.buildUrl(sortBy);
+            URL movieRequestUrl = networkUtil.buildUrl(sortBy);
 
             try {
-                String jsonMovieResponse = NetworkUtality.getResponceFromHttp(movieRequestUrl);
+                String jsonMovieResponse = networkUtil.getResponseFromHttp(movieRequestUrl);
 
-                jsonMovieData = JSONUtality.getMovieInformationsFromJson(MainActivity.this, jsonMovieResponse);
+                jsonMovieData = JSONUtil.getMovieInfo(MainActivity.this, jsonMovieResponse);
                 return jsonMovieData;
 
             } catch (Exception e) {
@@ -142,9 +125,8 @@ public class MainActivity extends AppCompatActivity implements rvAdapter.MovieAd
     }
 
     private void showErrorMessage() {
-        mConnectionError = (TextView) findViewById(R.id.tv_connection_error);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mConnectionError.setVisibility(View.VISIBLE);
+        connectionErrorImage.setVisibility(View.VISIBLE);
     }
 
     @Override
